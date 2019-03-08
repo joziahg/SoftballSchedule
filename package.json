@@ -1,0 +1,12 @@
+{
+  "name": "softballschedule",
+  "version": "0.1.0",
+  "description": "Simple Team Scheduler",
+  "main": "index.js",
+  "repository": "https://github.com/joziahg/SoftballSchedule.git",
+  "author": "Joziah Grimm <joziahg@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js"
+  }
+}
