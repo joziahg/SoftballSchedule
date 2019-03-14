@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const softballTeams = [ // Array of teams
     'Ottumwa', 'Benton', 'Bettendorf', 'IC Regina', 'CR Kennedy',
     'Cedar Falls', 'Dub. Senior', 'Dub. Hempstead', 'North Scott',
@@ -34,32 +36,54 @@ function shuffle(array) {
       array[m] = array[i]
       array[i] = t
     }
-  
     return array
-  }
+}
 
-function splitTeamsIntoDiamonds (arrayOfTeams, numberOfGames) {
-    const shuffledTeams = shuffle(arrayOfTeams)
+function splitTeamsIntoDiamonds (arrayOfTeamCombos) {
     var diamond1 = []
     var diamond2 = []
     function getRndInteger(min, max) {
         return Math.floor(Math.random() * (max - min) ) + min;
       }
-    for(i = 0; i < numberOfGames; i++){
+    for(i = 0; i < arrayOfTeamCombos.length; i++){
         i % 2
-        ? diamond1.push(arrayOfTeams[i])
-        : diamond2.push(arrayOfTeams[i])
+        ? diamond1.push(arrayOfTeamCombos[i])
+        : diamond2.push(arrayOfTeamCombos[i])
     }
-    return [ diamond1, diamond2 ]
+    return { diamond1TeamCombos: shuffle(diamond1), diamond2TeamCombos: shuffle(diamond2) }
+}
+
+function teamsCantPlayTwoGamesAtOnce ({diamond1TeamCombos, diamond2TeamCombos}){
+    var games = []
+    for(i = 0; i < diamond1TeamCombos.length; i++){
+        const diamond1 = diamond1TeamCombos[i].split(',')
+        const diamond2 = diamond2TeamCombos[i].split(',')
+        if (diamond1[0] === diamond2[0]) continue
+        if (diamond1[1] === diamond2[0]) continue
+        if (diamond1[0] === diamond2[1]) continue
+        if (diamond1[1] === diamond2[1]) continue
+        games.push({diamond1, diamond2})
+    }
+    return games
+}
+
+function teamsCantPlayMoreThanTwiceADay (diamondsSort1){
+    var games = []
+    for(i = 0; i < diamondsSort1.length; i++){
+        games.push(diamondsSort1[i].diamond1)
+        games.push(diamondsSort1[i].diamond2)
+    }
+    console.log(diamondsSort1)
 }
 
 function calculateDaysGames (arrayOfTeams, numberOfGames){ // calculates games for 1 day
     var allPossibleTeamCombos = []
-    arrayOfTeams.getPairs(function(returnedPairs){ // add all the possible teams to memory
-        allPossibleTeamCombos.push(returnedPairs)
+    arrayOfTeams.getPairs(function(returnedPair){ // add all the possible teams to memory
+        allPossibleTeamCombos.push(returnedPair)
     })
+    console.log(`All Possible Combos: ${ allPossibleTeamCombos.length }`)
     const allPossibleTeamCombosToString = allPossibleTeamCombos.map(teamCombo => teamCombo.toString())
-    const removeBadTeamCombos = allPossibleTeamCombosToString.filter(teamCombo => {
+    const legalTeamCombos = allPossibleTeamCombosToString.filter(teamCombo => {
         switch(teamCombo){
             case 'Ottumwa,CR Jeff Blue':
             case 'Bettendorf,North Scott':
@@ -72,11 +96,14 @@ function calculateDaysGames (arrayOfTeams, numberOfGames){ // calculates games f
                 return true
         }
     })
-    return removeBadTeamCombos
+    console.log(`All Legal Combos: ${ legalTeamCombos.length }`)
+    const teamsToDiamonds = splitTeamsIntoDiamonds(legalTeamCombos)
+    const diamondsSort1 = teamsCantPlayTwoGamesAtOnce(teamsToDiamonds)
+    console.log(`All games where teams play one game at a time: ${diamondsSort1.length}`)
+    return diamondsSort1
 }
 
 console.log(calculateDaysGames(june3Teams, 14))
-
 
 const june10Teams = [
     'Benton', 'CR Kennedy', 'Cedar Falls', 'Dub. Senior',
