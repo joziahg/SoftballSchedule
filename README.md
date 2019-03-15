@@ -18,6 +18,15 @@ xxxxxxxxx@xxxxx xxxxxxx /
 $ git checkout -b BranchName
 
 xxxxxxxxx@xxxxx xxxxxxx /SoftballSchedule (BranchName)
+$ git add .
+
+xxxxxxxxx@xxxxx xxxxxxx /SoftballSchedule (BranchName)
+$ git commit -m "MESSAGE"
+
+xxxxxxxxx@xxxxx xxxxxxx /SoftballSchedule (BranchName)
+$ git push --set-upstream origin BranchName
+
+xxxxxxxxx@xxxxx xxxxxxx /SoftballSchedule (BranchName)
 $ yarn start
 
 ```

@@ -38,13 +38,12 @@ function shuffle(array) {
     }
     return array
 }
-
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min) ) + min;
+}
 function splitTeamsIntoDiamonds (arrayOfTeamCombos) {
     var diamond1 = []
     var diamond2 = []
-    function getRndInteger(min, max) {
-        return Math.floor(Math.random() * (max - min) ) + min;
-      }
     for(i = 0; i < arrayOfTeamCombos.length; i++){
         i % 2
         ? diamond1.push(arrayOfTeamCombos[i])
@@ -65,15 +64,6 @@ function teamsCantPlayTwoGamesAtOnce ({diamond1TeamCombos, diamond2TeamCombos}){
         games.push({diamond1, diamond2})
     }
     return games
-}
-
-function teamsCantPlayMoreThanTwiceADay (diamondsSort1){
-    var games = []
-    for(i = 0; i < diamondsSort1.length; i++){
-        games.push(diamondsSort1[i].diamond1)
-        games.push(diamondsSort1[i].diamond2)
-    }
-    console.log(diamondsSort1)
 }
 
 function calculateDaysGames (arrayOfTeams, numberOfGames){ // calculates games for 1 day
@@ -102,6 +92,14 @@ function calculateDaysGames (arrayOfTeams, numberOfGames){ // calculates games f
     console.log(`All games where teams play one game at a time: ${diamondsSort1.length}`)
     return diamondsSort1
 }
+
+function teamsCantPlayTwoGamesInOneDate (diamondsSort1){
+    var games = []
+    for(i = 0; i < diamondsSort1.length; i++){
+        if(games.includes(diamondsSort1[i].diamond1[0])) continue
+    }
+}
+
 
 console.log(calculateDaysGames(june3Teams, 14))
 
@@ -134,18 +132,3 @@ const july1Teams = [
     'IC Regina', 'Bettendorf', 'North Scott'
 ]
 const teams = [ june3Teams, june10Teams, june17Teams, june24Teams, july1Teams ]
-
-
-
-/*
-const gameDates = [
-    new Date('2019-06-03'),  // date passes as iso 8601 string with the format YYY-MM-DD
-    new Date(2019, 05, 10), // date passed as integer variables with the format YYYY, MM, DD Note: Javascript counts months from 0-11
-    new Date('06/17/2019'), // date passed as javascript short date string with the format MM/DD/YYYY
-    new Date('June 24 2019'), // date passed as javascript long date string with the format month day year
-    new Date('1 July 2019') // month and day can be passed in any order
-]
-
-
-
-*/
