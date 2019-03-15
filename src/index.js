@@ -57,8 +57,6 @@ function teamsCantPlayTwoGamesAtOnce ({diamond1TeamCombos, diamond2TeamCombos}){
     for(i = 0; i < diamond1TeamCombos.length; i++){
         const diamond1 = diamond1TeamCombos[i].split(',')
         const diamond2 = diamond2TeamCombos[i].split(',')
-        const diamond2Plus1 = diamond2TeamCombos[i++].split(',')
-        const diamond1Plus1 = diamond2TeamCombos[i++].split(',')
         if (diamond1[0] === diamond2[0]) continue
         if (diamond1[1] === diamond2[0]) continue
         if (diamond1[0] === diamond2[1]) continue
@@ -66,14 +64,6 @@ function teamsCantPlayTwoGamesAtOnce ({diamond1TeamCombos, diamond2TeamCombos}){
         games.push({diamond1, diamond2})
     }
     return games
-}
-
-function teamsCantPlayMoreThanTwiceADay (diamondsSort1){
-    var games = []
-    for(i = 0; i < diamondsSort1.length; i++){
-        games.push(diamondsSort1[i].diamond1)
-        games.push(diamondsSort1[i].diamond2)
-    }
 }
 
 function calculateDaysGames (arrayOfTeams, numberOfGames){ // calculates games for 1 day
@@ -104,7 +94,10 @@ function calculateDaysGames (arrayOfTeams, numberOfGames){ // calculates games f
 }
 
 function teamsCantPlayTwoGamesInOneDate (diamondsSort1){
-    
+    var games = []
+    for(i = 0; i < diamondsSort1.length; i++){
+        if(games.includes(diamondsSort1[i].diamond1[0])) continue
+    }
 }
 
 
